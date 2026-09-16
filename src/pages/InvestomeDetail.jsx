@@ -119,17 +119,17 @@ export default function InvestomeDetail() {
         <div className="frame">
           <SectionLabel number="02">시스템 구조</SectionLabel>
           <div className="architecture-intro">
-            <h2>외부 API와 자체 데이터의<br />책임을 분리했습니다.</h2>
-            <p>Investome 자체 데이터는 Spring Boot가,<br />외부 금융 데이터는 Vercel Functions가 처리합니다.</p>
+            <h2>서비스 데이터와 외부 API의 처리 경로를 나누어 구성했습니다.</h2>
+            <p>회원·게시판·마이페이지는 Spring Boot가 담당하고,<br />뉴스·환율·일부 시세 데이터는 Vercel Functions가 처리합니다.</p>
           </div>
           <div className="architecture-map" aria-label="Investome 시스템 구조">
             <div className="architecture-node architecture-node--main"><span>클라이언트</span><strong>React</strong><small>화면 · 상태 관리<br />API 요청</small></div>
             <div className="architecture-branch">
-              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 비즈니스 로직<br />데이터 접근</small></div>
+              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 게시판<br />마이페이지</small></div>
               <div className="architecture-node"><span>자체 데이터</span><strong>PostgreSQL</strong><small>사용자 · 게시판<br />포트폴리오</small></div>
             </div>
             <div className="architecture-branch">
-              <div className="architecture-node"><span>외부 API 계층</span><strong>Vercel Functions</strong><small>응답 정규화 · 캐시<br />실패 시 대체 처리</small></div>
+              <div className="architecture-node"><span>외부 API 계층</span><strong>Vercel Functions</strong><small>뉴스 · 환율<br />코인 · 원자재 시세</small></div>
               <div className="architecture-node"><span>데이터 제공처</span><strong>금융 API</strong><small>KIS · Yahoo<br />CoinGecko · Upbit</small></div>
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function InvestomeDetail() {
             ['Controller의 JWT 직접 파싱', 'JWT Filter의 공통 인증 처리'],
             ['Service의 입력 형식 검증', 'Request DTO Validation'],
             ['Service의 HTTP 응답 결정', 'Custom Exception과 전역 예외 처리'],
-            ['React의 외부 API 응답 의존', 'Vercel Functions 응답 정규화'],
+            ['CoinGecko Top30 필드 직접 사용', 'Vercel에서 공통 랭킹 형식으로 변환'],
           ].map(([before, after]) => <div className="comparison-row" key={before}><p>{before}</p><span>→</span><p>{after}</p></div>)}
         </div>
       </section>
@@ -178,15 +178,15 @@ export default function InvestomeDetail() {
         <div className="case-list">
           <details open>
             <summary><span>01</span><strong>Vercel 배포 후 /api/ticker 404</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> Vite middleware는 로컬 개발 서버에만 존재했고 운영 환경에는 실제 API endpoint가 없었습니다.</p><p><b>해결</b> 외부 금융 API를 Vercel Functions로 이동해 배포 환경의 실행 모델과 일치시켰습니다.</p><p><b>결과</b> 개발과 배포 환경에서 동일한 /api 요청 경로를 사용할 수 있게 됐습니다.</p></div>
+            <div><p><b>원인</b> <code>/api/ticker</code>는 Vite 개발 서버의 middleware에만 있어 Vercel 운영 환경에는 endpoint가 없었습니다.</p><p><b>판단</b> 브라우저의 직접 외부 호출은 임시 우회였고, 운영 환경에서 실행되는 서버 API가 필요했습니다.</p><p><b>해결</b> Vite middleware의 외부 API 처리를 Vercel Functions의 <code>/api</code> endpoint로 옮겼습니다.</p><p><b>결과</b> 개발과 배포 환경에서 동일한 <code>/api</code> 요청 경로를 사용할 수 있게 됐습니다.</p></div>
           </details>
           <details>
             <summary><span>02</span><strong>외부 API 실패와 누락 데이터</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> HTTP 성공과 화면에 필요한 필드의 완전성을 같은 것으로 판단했습니다.</p><p><b>해결</b> KIS → Yahoo fallback, Yahoo quote → chart metadata 보조 경로, 종목별 독립 처리와 stale cache를 적용했습니다.</p><p><b>결과</b> 일부 공급자의 실패가 전체 종목 조회 실패로 이어지지 않도록 개선했습니다.</p></div>
+            <div><p><b>원인</b> 공급자가 응답해도 가격 필드가 비어 있거나 일부 종목 요청만 실패할 수 있었습니다.</p><p><b>판단</b> HTTP 성공 여부와 화면에 사용할 데이터의 완전성을 별도로 확인해야 했습니다.</p><p><b>해결</b> KIS → Yahoo 대체, Yahoo quote → chart 보완, 종목별 독립 처리와 stale cache를 적용했습니다.</p><p><b>결과</b> 일부 공급자나 종목의 실패가 전체 목록 실패로 이어지지 않도록 개선했습니다.</p></div>
           </details>
           <details>
             <summary><span>03</span><strong>게시글 삭제 시 연관 데이터 충돌</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> FK가 연결된 추천과 댓글보다 게시글 삭제가 먼저 시도될 수 있었습니다.</p><p><b>해결</b> transaction 안에서 추천 → 댓글 → 게시글 순서를 명시하고 cascade/orphan removal을 정리했습니다.</p><p><b>결과</b> 외래 키 충돌 없이 게시글과 연관 데이터를 함께 삭제할 수 있게 됐습니다.</p></div>
+            <div><p><b>원인</b> 추천과 댓글이 게시글을 참조한 상태에서 게시글 삭제가 먼저 시도됐습니다.</p><p><b>판단</b> 부모 데이터보다 외래 키로 연결된 연관 데이터를 먼저 정리해야 했습니다.</p><p><b>해결</b> <code>@Transactional</code> 안에서 추천 → 댓글 → 게시글 순서로 삭제하도록 명시했습니다.</p><p><b>결과</b> 외래 키 충돌 없이 게시글과 연관 데이터를 함께 삭제할 수 있게 됐습니다.</p></div>
           </details>
         </div>
       </section>

@@ -13,6 +13,7 @@ export default function ProjectFeature({ feature, reverse = false }) {
         <span className="feature-index">{feature.index}</span>
         <h3>{feature.title}</h3>
         <p>{feature.body}</p>
+        {feature.implementation && <p className="feature-implementation"><span>구현</span>{feature.implementation}</p>}
       </div>
       <div className="feature-gallery">
         <ImagePlaceholder key={images[activeIndex]} src={`/images/projects/investome/${images[activeIndex]}`} alt={`${feature.title} 화면 ${activeIndex + 1}`} title={feature.title.toUpperCase()} recommendation={feature.recommendation} />

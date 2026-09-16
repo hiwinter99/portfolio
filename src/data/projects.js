@@ -6,8 +6,8 @@ export const projects = [
 ]
 
 export const investomeFeatures = [
-  { index: '01', title: 'Market Dashboard', body: '주식·가상자산의 현재가와 등락률, 환율, 금융 뉴스를 한 화면에서 탐색합니다.', images: ['dashboard.png', 'dashboard2.png'], recommendation: '16:9 desktop screenshot' },
-  { index: '02', title: 'Portfolio Management', body: '인증된 사용자의 보유 종목과 목표 금액을 저장하고 본인의 데이터만 조회합니다.', images: ['portfolio.png', 'portfolio2.png'], recommendation: 'portfolio summary + holdings' },
-  { index: '03', title: 'Community', body: '게시글, 댓글, 추천을 제공하며 연관 데이터의 삭제 순서와 무결성을 관리합니다.', images: ['community.png', 'community2.png'], recommendation: 'post detail + comments' },
+  { index: '01', title: 'Market Dashboard', body: '주식·가상자산의 현재가와 등락률, 환율, 금융 뉴스를 한 화면에서 탐색합니다.', implementation: '공급자별 응답을 공통 필드로 변환하고 캐시와 종목별 독립 처리로 일부 실패를 격리했습니다.', images: ['dashboard.png', 'dashboard2.png'], recommendation: '16:9 desktop screenshot' },
+  { index: '02', title: 'Portfolio Management', body: '인증된 사용자의 보유 종목과 목표 금액을 저장하고 본인의 데이터만 조회합니다.', implementation: '인증 사용자 ID를 저장·조회 조건으로 사용해 사용자별 포트폴리오 데이터를 분리했습니다.', images: ['portfolio.png', 'portfolio2.png'], recommendation: 'portfolio summary + holdings' },
+  { index: '03', title: 'Community', body: '게시글, 댓글, 추천을 제공하며 연관 데이터의 삭제 순서와 무결성을 관리합니다.', implementation: '작성자 권한을 검증하고 트랜잭션 안에서 추천·댓글·게시글의 삭제 순서를 관리했습니다.', images: ['community.png', 'community2.png'], recommendation: 'post detail + comments' },
 ]
 

@@ -131,6 +131,18 @@ button, input, textarea, select { font: inherit; }
 .feature-index { font-size: .76rem; color: var(--signal); }
 .feature-copy h3 { margin-top: auto; font-size: clamp(1.8rem, 3vw, 3.2rem); font-weight: 500; letter-spacing: -.045em; }
 .feature-copy p { margin-top: 22px; max-width: 390px; color: var(--soft-ink); line-height: 1.75; }
+.feature-copy .feature-implementation {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: .84rem;
+}
+.feature-implementation span {
+  margin-right: 10px;
+  color: var(--signal);
+  font-size: .7rem;
+  font-weight: 600;
+}
 
 .engineering-grid { margin: clamp(60px, 6vw, 84px) 0 clamp(72px, 7vw, 100px); display: grid; grid-template-columns: 1.4fr 1fr; gap: 10%; }
 .engineering-copy { display: grid; gap: 30px; color: #aaa; line-height: 1.8; align-self: end; }
@@ -170,8 +182,13 @@ button, input, textarea, select { font: inherit; }
 .accordion-action-open { display: none; }
 details[open] > summary .accordion-action-open { display: inline; }
 details[open] > summary .accordion-action-closed { display: none; }
-.case-list details > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5%; padding: 10px 0 45px 70px; color: var(--soft-ink); line-height: 1.75; }
+.case-list details > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 6%; padding: 10px 0 45px 70px; color: var(--soft-ink); line-height: 1.75; }
 .case-list b { color: var(--ink); margin-right: 10px; }
+.case-list code {
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .92em;
+}
 
 .next-project { min-height: 260px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--line); }
 .next-project span { color: var(--soft-ink); font-size: .76rem; text-transform: uppercase; }
