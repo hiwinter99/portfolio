@@ -102,8 +102,8 @@ button, input, textarea, select { font: inherit; }
 .project-spec dt { color: var(--soft-ink); }
 .project-spec dd a { margin-right: 14px; }
 
-.architecture, .engineering, .retrospective { background: var(--dark); color: var(--white); }
-.architecture .section-label, .engineering .section-label, .retrospective .section-label { border-color: #444; }
+.architecture, .engineering { background: var(--dark); color: var(--white); }
+.architecture .section-label, .engineering .section-label { border-color: #444; }
 .architecture-intro { margin: clamp(60px, 6vw, 84px) 0 clamp(72px, 7vw, 100px); display: grid; grid-template-columns: 1.5fr 1fr; align-items: end; gap: 8%; }
 .architecture-intro h2, .engineering h2, .refactoring h2, .troubleshooting h2 {
   font-family: Manrope, sans-serif;
@@ -173,8 +173,6 @@ details[open] > summary .accordion-action-closed { display: none; }
 .case-list details > div { display: grid; grid-template-columns: 1fr 1fr; gap: 7%; padding: 10px 0 45px 70px; color: var(--soft-ink); line-height: 1.75; }
 .case-list b { color: var(--ink); margin-right: 10px; }
 
-.retrospective blockquote { margin: clamp(64px, 7vw, 96px) 0 clamp(72px, 8vw, 108px); max-width: 1080px; font-family: 'Noto Sans KR', sans-serif; font-size: clamp(2.4rem, 4.2vw, 4.5rem); line-height: 1.3; letter-spacing: -.05em; }
-.retrospective-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12%; margin-left: 34%; color: #aaa; line-height: 1.8; }
 .next-project { min-height: 260px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--line); }
 .next-project span { color: var(--soft-ink); font-size: .76rem; text-transform: uppercase; }
 .next-project a { margin-top: 20px; display: flex; justify-content: space-between; font-size: clamp(2.5rem, 4.5vw, 4.8rem); letter-spacing: -.05em; }
@@ -194,7 +192,6 @@ details[open] > summary .accordion-action-closed { display: none; }
   .flow-line { grid-template-columns: repeat(2, 1fr); }
   .flow-line div { min-height: 140px; border-bottom: 1px solid #444; }
   .engineering-notes { grid-template-columns: 1fr; }
-  .retrospective-grid { margin-left: 0; }
 }
 
 @media (max-width: 600px) {
@@ -237,8 +234,6 @@ details[open] > summary .accordion-action-closed { display: none; }
   .comparison-row { grid-template-columns: 1fr 28px 1fr; font-size: .9rem; }
   .case-list summary { grid-template-columns: 42px 1fr auto; }
   .case-list details > div { grid-template-columns: 1fr; padding-left: 42px; }
-  .retrospective blockquote { font-size: 2.6rem; }
-  .retrospective-grid { grid-template-columns: 1fr; gap: 36px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -504,6 +499,14 @@ details[open] > summary .accordion-action-closed { display: none; }
   -webkit-backdrop-filter: blur(6px);
 }
 .nav a.active { color: var(--signal); }
+.site-header--detail { grid-template-columns: 1fr auto; }
+.detail-home-link {
+  justify-self: end;
+  color: var(--soft-ink);
+  font-size: .82rem;
+  transition: color 160ms ease;
+}
+.detail-home-link:hover { color: var(--signal); }
 .profile-hero,
 #projects,
 #skills,
@@ -698,13 +701,11 @@ details[open] > summary .accordion-action-closed { display: none; }
 
 /* Dark section contrast */
 .engineering .section-label,
-.retrospective .section-label,
 .flow-line,
 .engineering-notes div {
   border-color: #6f91a5;
 }
 .engineering .section-label span,
-.retrospective .section-label span,
 .flow-line span,
 .engineering-notes span {
   color: var(--sky);
@@ -713,8 +714,7 @@ details[open] > summary .accordion-action-closed { display: none; }
   border-color: #6f91a5;
 }
 .engineering-copy,
-.engineering-notes p,
-.retrospective-grid {
+.engineering-notes p {
   color: #d1e0e8;
 }
 

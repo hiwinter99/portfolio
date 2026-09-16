@@ -45,13 +45,21 @@ export default function Header() {
     setActiveSection('')
   }
 
+  const isProjectDetail = pathname.startsWith('/projects/')
+
   return (
-    <header className="site-header frame">
+    <header className={`site-header frame${isProjectDetail ? ' site-header--detail' : ''}`}>
       <NavLink className="wordmark" to="/" onClick={handleLogoClick} aria-label="홈 최상단으로 이동">KDG<span className="wordmark-dot">.</span></NavLink>
-      <nav className="nav" aria-label="주요 메뉴">
-        {navigation.map(({ id, label }) => <a className={pathname === '/' && activeSection === id ? 'active' : ''} href={pathname === '/' ? '#' + id : '/#' + id} key={id}>{label}</a>)}
-      </nav>
-      <NavLink className="header-role" to="/" onClick={handleLogoClick}>Backend · Java</NavLink>
+      {isProjectDetail ? (
+        <NavLink className="detail-home-link" to="/">← 홈으로</NavLink>
+      ) : (
+        <>
+          <nav className="nav" aria-label="주요 메뉴">
+            {navigation.map(({ id, label }) => <a className={pathname === '/' && activeSection === id ? 'active' : ''} href={pathname === '/' ? '#' + id : '/#' + id} key={id}>{label}</a>)}
+          </nav>
+          <NavLink className="header-role" to="/" onClick={handleLogoClick}>Backend · Java</NavLink>
+        </>
+      )}
     </header>
   )
 }

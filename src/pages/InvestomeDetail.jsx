@@ -82,7 +82,7 @@ export default function InvestomeDetail() {
       <div className="frame"><ImagePlaceholder src={project.cover} alt="Investome 대표 화면" title="Investome — KEY VISUAL" recommendation="16:9 dashboard screenshot" tone="dark" /></div>
 
       <section className="frame section-space detail-overview">
-        <SectionLabel number="01">Overview</SectionLabel>
+        <SectionLabel number="01">개요</SectionLabel>
         <div className="overview-grid">
           <p className="lead">
             <span className="overview-line">주식 · 암호화폐 · 원자재 · 환율 · 경제 뉴스 등</span>
@@ -99,27 +99,27 @@ export default function InvestomeDetail() {
 
       <section className="architecture section-space">
         <div className="frame">
-          <SectionLabel number="02">Architecture</SectionLabel>
+          <SectionLabel number="02">시스템 구조</SectionLabel>
           <div className="architecture-intro">
             <h2>외부 API와 자체 데이터의<br />책임을 분리했습니다.</h2>
             <p>Investome 자체 데이터는 Spring Boot가,<br />외부 금융 데이터는 Vercel Functions가 처리합니다.</p>
           </div>
           <div className="architecture-map" aria-label="Investome 시스템 구조">
-            <div className="architecture-node architecture-node--main"><span>CLIENT</span><strong>React</strong><small>UI · State<br />Routing</small></div>
+            <div className="architecture-node architecture-node--main"><span>클라이언트</span><strong>React</strong><small>UI · 상태 관리<br />라우팅</small></div>
             <div className="architecture-branch">
-              <div className="architecture-node"><span>CORE</span><strong>Spring Boot</strong><small>Security · Business<br />JPA</small></div>
-              <div className="architecture-node"><span>DATA</span><strong>PostgreSQL</strong><small>User · Board<br />Portfolio</small></div>
+              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 비즈니스<br />JPA</small></div>
+              <div className="architecture-node"><span>자체 데이터</span><strong>PostgreSQL</strong><small>사용자 · 게시판<br />포트폴리오</small></div>
             </div>
             <div className="architecture-branch">
-              <div className="architecture-node"><span>EDGE</span><strong>Vercel Functions</strong><small>Normalize · Cache<br />Fallback</small></div>
-              <div className="architecture-node"><span>PROVIDERS</span><strong>Financial APIs</strong><small>KIS · Yahoo<br />CoinGecko · Upbit</small></div>
+              <div className="architecture-node"><span>외부 API 계층</span><strong>Vercel Functions</strong><small>정규화 · 캐시<br />대체 경로</small></div>
+              <div className="architecture-node"><span>데이터 제공처</span><strong>Financial APIs</strong><small>KIS · Yahoo<br />CoinGecko · Upbit</small></div>
             </div>
           </div>
         </div>
       </section>
 
       <section className="frame section-space">
-        <SectionLabel number="03">Key features</SectionLabel>
+        <SectionLabel number="03">주요 기능</SectionLabel>
         <div className="feature-list">
           {investomeFeatures.map((feature, index) => <ProjectFeature key={feature.title} feature={feature} reverse={index % 2 === 1} />)}
         </div>
@@ -127,7 +127,7 @@ export default function InvestomeDetail() {
 
       <section className="engineering section-space">
         <div className="frame">
-          <SectionLabel number="04">Backend Engineering</SectionLabel>
+          <SectionLabel number="04">백엔드 구현</SectionLabel>
           <div className="engineering-grid">
             <div className="engineering-title"><h2>핵심 백엔드 구현을 코드 중심으로 정리했습니다.</h2></div>
             <div className="engineering-copy">
@@ -141,7 +141,7 @@ export default function InvestomeDetail() {
       </section>
 
       <section className="frame section-space refactoring">
-        <SectionLabel number="05">Refactoring</SectionLabel>
+        <SectionLabel number="05">리팩터링</SectionLabel>
         <div className="refactor-heading"><h2>반복되던 처리를<br />공통 구조로 정리했습니다.</h2><p>기능을 바꾸기보다 책임이 있어야 할 위치를 다시 정리했습니다.</p></div>
         <div className="comparison">
           <div className="comparison-head"><span>Before</span><span>After</span></div>
@@ -156,7 +156,7 @@ export default function InvestomeDetail() {
       </section>
 
       <section className="frame section-space troubleshooting">
-        <SectionLabel number="06">Troubleshooting</SectionLabel>
+        <SectionLabel number="06">문제 해결</SectionLabel>
         <h2>배포와 운영 과정에서 마주한 문제를 해결했습니다.</h2>
         <div className="case-list">
           <details open>
@@ -174,19 +174,8 @@ export default function InvestomeDetail() {
         </div>
       </section>
 
-      <section className="retrospective section-space">
-        <div className="frame">
-          <SectionLabel number="07">Retrospective</SectionLabel>
-          <blockquote>“동작하는 코드”와<br />“새 환경에서 재현되는 코드”는 다르다.</blockquote>
-          <div className="retrospective-grid">
-            <p>화면 기능 하나가 React 요청, 배포 경로, 외부 공급자, Spring 비즈니스 로직과 DB 제약까지 이어진다는 것을 실제 장애를 통해 배웠습니다.</p>
-            <p>현재 access token 단독 구조, 제한적인 자동화 테스트, bundle 크기는 다음 개선 과제로 남겨두었습니다. 구현하지 않은 기능을 완성된 것처럼 설명하지 않습니다.</p>
-          </div>
-        </div>
-      </section>
-
       <nav className="next-project frame" aria-label="다음 페이지">
-        <span>Next</span><Link to="/projects">All projects <b>→</b></Link>
+        <span>다음</span><Link to="/projects">프로젝트 목록 <b>→</b></Link>
       </nav>
     </article>
   )
