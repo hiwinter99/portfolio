@@ -46,7 +46,7 @@ export default function Home() {
 
           <figure className="profile-photo">
             <div className="profile-photo-placeholder"><span>PROFILE PHOTO</span><small>/images/profile/profile.jpg</small></div>
-            <img src="/images/profile/profile.jpg" alt="김동규 프로필" onError={(event) => { event.currentTarget.hidden = true }} />
+            <img src="/images/profile/profile.png" alt="김동규 프로필" onError={(event) => { event.currentTarget.hidden = true }} />
           </figure>
         </div>
 
