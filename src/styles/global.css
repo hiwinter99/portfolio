@@ -893,3 +893,35 @@ details[open] > summary .accordion-action-closed { display: none; }
   object-fit: contain;
   background: #1e1e1e;
 }
+
+
+/* Compact portrait and a prominent link to the live service. */
+.profile-hero-inner { grid-template-columns: minmax(0, 1fr) 250px; }
+.profile-photo { width: 250px; justify-self: end; }
+.detail-service-actions { margin-top: 30px; }
+.detail-service-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  max-width: 100%;
+  padding: 20px 24px;
+  background: var(--sky);
+  color: var(--ink);
+  border: 1px solid #83bddf;
+  font-weight: 600;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.detail-service-link small { display: block; margin-top: 6px; font-size: .75rem; font-weight: 400; }
+.detail-service-arrow { font-size: 1.8rem; line-height: 1; }
+.detail-service-link:hover { background: #76bce8; transform: translateY(-2px); }
+.detail-service-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 760px) {
+  .profile-hero-inner { grid-template-columns: 1fr; }
+  .profile-photo { width: min(62vw, 220px); justify-self: start; }
+  .detail-service-link { width: 100%; gap: 18px; padding: 18px 20px; font-size: .9rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .detail-service-link { transition: none; }
+  .detail-service-link:hover { transform: none; }
+}

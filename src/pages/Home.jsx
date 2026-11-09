@@ -32,9 +32,8 @@ export default function Home() {
         <div className="frame profile-hero-inner">
           <div className="profile-copy">
             <div className="profile-title"><p>{profile.position}</p><span>{profile.englishName}</span></div>
-            <h1>{profile.name}<span className="accent">.</span></h1>
+            <h1>{profile.name}</h1>
             <p className="profile-headline">{profile.headline}</p>
-            <p className="profile-summary">{profile.summary}</p>
             <div className="profile-actions">
               <Link className="primary-link" to="/projects">Projects <span>→</span></Link>
               <a className="plain-link" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
@@ -45,7 +44,7 @@ export default function Home() {
           </div>
 
           <figure className="profile-photo">
-            <div className="profile-photo-placeholder"><span>PROFILE PHOTO</span><small>/images/profile/profile.jpg</small></div>
+            <div className="profile-photo-placeholder"><span>PROFILE PHOTO</span><small>/images/profile/profile.png</small></div>
             <img src="/images/profile/profile.png" alt="김동규 프로필" onError={(event) => { event.currentTarget.hidden = true }} />
           </figure>
         </div>

@@ -94,6 +94,12 @@ export default function InvestomeDetail() {
           <p className="detail-summary">다양한 경제, 투자 관련 데이터와 마이페이지, 게시판 기능까지 더한 하나의 <strong>개인 투자 정보 플랫폼</strong></p>
           <span>{project.period}</span>
         </div>
+        <div className="detail-service-actions">
+          <a className="detail-service-link" href={project.links.live} target="_blank" rel="noopener noreferrer">
+            <span>Investome 홈페이지</span>
+            <span className="detail-service-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
 
       <div className="frame"><ImagePlaceholder src={project.cover} alt="Investome 대표 화면" title="Investome — KEY VISUAL" recommendation="16:9 dashboard screenshot" tone="dark" /></div>
