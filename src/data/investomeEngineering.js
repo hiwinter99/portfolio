@@ -1,0 +1,48 @@
+export const coreEngineeringCases = [
+  {
+    index: '01',
+    title: '금융 API 응답 변환과 조회 안정성',
+    tech: 'KIS · Yahoo · CoinGecko · 공통 응답 · 캐시',
+    points: [
+      { label: '과제', text: '공급자마다 종목·가격·시가총액 필드가 다르고, 조회 실패나 일부 가격 누락도 발생할 수 있습니다.' },
+      { label: '구현', text: '공급자 응답을 MarketItemResponse의 공통 필드로 변환합니다. 주식 순위 스냅샷과 단기 가격 캐시를 분리하고, Yahoo 일괄 조회의 누락 가격은 chart 데이터로 보완합니다.' },
+      { label: '실패 대응', text: '당일 주식 순위 조회가 실패하면 이전 스냅샷으로 대체합니다. 코인도 기본 조회 실패 시 대체 API를 시도하고, 새 목록을 얻지 못하면 메모리의 이전 목록을 활용합니다.' },
+    ],
+    source: 'StockRankingSnapshotService.java · CryptoMarketService.java · MarketItemResponse.java',
+    flowTitle: '조회부터 응답까지',
+    flow: ['요청 시장과 종목 확인', '순위 스냅샷·가격 캐시 확인', '외부 조회 및 누락 데이터 보완', '공통 응답 필드로 변환 후 반환'],
+    codeFile: 'StockRankingSnapshotService.java · getTop30() 일부',
+    code: 'List<MarketRankSnapshotItem> snapshotItems =\n    ensureTodaySnapshot(normalizedMarket);\nreturn ensureLivePriceSnapshot(\n    normalizedMarket, snapshotItems);',
+  },
+  {
+    index: '02',
+    title: '실시간 시세 수신과 브라우저 전달',
+    tech: 'KIS WebSocket · SSE · 연결 상태 관리',
+    points: [
+      { label: '구조', text: '브라우저마다 KIS에 직접 연결하는 대신, 서버 프로세스의 WebSocket 연결에서 종목 시세를 수신하고 SSE로 접속한 사용자에게 전달합니다.' },
+      { label: '구현', text: '프로세스 안에서 시세 연결을 공유하고, 거래 데이터를 모아 스냅샷으로 전달합니다. 종목 구독 응답과 연결 상태를 관리하고 변경 사항 또는 주기적 상태를 전송합니다.' },
+      { label: '복구·범위', text: '연결 오류 시 재시도 대기를 늘리고, 장시간 수신이 없거나 사용자가 떠나면 연결을 정리합니다. 연결 공유 범위는 서버 프로세스 내부이며, 다중 서버의 단일 연결을 보장하는 구조는 아닙니다.' },
+    ],
+    source: 'PaperRealtimeService.java · PaperRealtimeController.java',
+    flowTitle: '실시간 데이터 전달 경로',
+    flow: ['서버에서 KIS WebSocket 구독', '종목별 체결 데이터와 연결 상태 갱신', 'SSE quotes 이벤트로 스냅샷 전송', '브라우저에서 시세·연결 상태 반영'],
+    codeFile: 'PaperRealtimeService.java · stream() 일부',
+    code: 'SseEmitter emitter = new SseEmitter(60_000L);\nviewers.add(emitter);\nemitter.onCompletion(() -> viewers.remove(emitter));\n// 첫 스냅샷 전달\nemitter.send(SseEmitter.event()\n    .name("quotes").data(feed()));',
+  },
+  {
+    index: '03',
+    title: '모의투자 주문의 중복·동시성 제어',
+    tech: 'TransactionTemplate · 비관적 잠금 · 요청 ID',
+    points: [
+      { label: '주문 가격', text: '클라이언트가 보내는 가격 대신 서버가 현재가를 조회합니다. 외부 시세 요청은 쓰기 트랜잭션과 계좌 잠금 전에 끝내고, 잠금을 얻은 뒤 조회 시각이 10초 이상 오래되면 체결을 거부합니다.' },
+      { label: '일관성', text: '계좌에 PESSIMISTIC_WRITE 잠금을 적용하고 잔액, 보유 수량, 주문 기록을 하나의 트랜잭션에서 변경합니다. 주문 저장이 실패하면 자산 변경도 함께 롤백되도록 구성했습니다.' },
+      { label: '중복 방지', text: '계좌와 요청 ID로 기존 주문을 확인하고 DB 유일 제약도 적용했습니다. 동일 주문의 재요청은 기존 결과를 반환하고, 같은 ID를 다른 주문에 사용하면 충돌로 처리합니다.' },
+      { label: '검증 범위', text: '자동 테스트에 중복·동시 주문, 잔액 초과, 보유 수량 초과 매도, 주문 저장 실패 시 롤백을 포함했습니다. 실제 증권 거래소의 주문장이나 호가 체결을 재현한 기능은 아닙니다.' },
+    ],
+    source: 'PaperTradingService.java · PaperAccountRepository.java · PaperOrder.java',
+    flowTitle: '모의 주문 처리 순서',
+    flow: ['입력·기존 요청 ID·매수 가능 종목 확인', '트랜잭션 밖에서 현재가 조회', '계좌 잠금 후 중복·시세 최신성 재확인', '잔액·보유 종목·주문 기록을 함께 반영'],
+    codeFile: 'PaperTradingService.java · execute() 일부',
+    code: 'PaperQuoteProvider.Quote quote =\n    quotes.quoteOf(request.symbol());\nreturn transaction.execute(status ->\n    executeLocked(userId, request, side, quote));',
+  },
+]

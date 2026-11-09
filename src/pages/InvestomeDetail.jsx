@@ -4,12 +4,13 @@ import ImagePlaceholder from '../components/ImagePlaceholder'
 import ProjectFeature from '../components/ProjectFeature'
 import SectionLabel from '../components/SectionLabel'
 import { investomeFeatures, projects } from '../data/projects'
+import { coreEngineeringCases } from '../data/investomeEngineering'
 
 const project = projects[0]
 
-const backendEngineeringCases = [
+const supportingEngineeringCases = [
   {
-    index: '01',
+    index: '04',
     title: 'JWT 인증과 SecurityContext',
     tech: 'OncePerRequestFilter · Spring Security',
     points: [
@@ -20,7 +21,7 @@ const backendEngineeringCases = [
     captures: [{ image: 'backend-auth.png', file: 'JwtAuthenticationFilter.java' }],
   },
   {
-    index: '02',
+    index: '05',
     title: '요청 검증과 공통 예외 응답',
     tech: 'Bean Validation · RestControllerAdvice',
     points: [
@@ -34,7 +35,7 @@ const backendEngineeringCases = [
     ],
   },
   {
-    index: '03',
+    index: '06',
     title: '연관 데이터 삭제와 트랜잭션',
     tech: '@Transactional · Spring Data JPA',
     points: [
@@ -46,12 +47,15 @@ const backendEngineeringCases = [
   },
 ]
 
+const backendEngineeringCases = [...coreEngineeringCases, ...supportingEngineeringCases]
+
 function EngineeringCase({ item, defaultOpen }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [activeIndex, setActiveIndex] = useState(0)
-  const capture = item.captures[activeIndex]
-  const showPrevious = () => setActiveIndex((index) => (index - 1 + item.captures.length) % item.captures.length)
-  const showNext = () => setActiveIndex((index) => (index + 1) % item.captures.length)
+  const captures = item.captures || []
+  const capture = captures[activeIndex]
+  const showPrevious = () => setActiveIndex((index) => (index - 1 + captures.length) % captures.length)
+  const showNext = () => setActiveIndex((index) => (index + 1) % captures.length)
 
   return (
     <details open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
@@ -60,24 +64,30 @@ function EngineeringCase({ item, defaultOpen }) {
         <div><strong>{item.title}</strong><small>{item.tech}</small></div>
         <span className="accordion-action">
           <span className="accordion-action-open">접기 ↑</span>
-          <span className="accordion-action-closed">코드 보기 ↓</span>
+          <span className="accordion-action-closed">구현 보기 ↓</span>
         </span>
       </summary>
-      <div className="engineering-case-content">
+      <div className={`engineering-case-content${capture ? '' : ' engineering-case-content--flow'}`}>
         <div className="engineering-case-copy">
           <dl className="engineering-case-points">
             {item.points.map(({ label, text }) => <div key={label}><dt>{label}</dt><dd>{text}</dd></div>)}
           </dl>
-          <small>코드 화면 · {capture.file}</small>
+          <small>{capture ? `코드 화면 · ${capture.file}` : `구현 위치 · ${item.source}`}</small>
         </div>
-        <div className="feature-gallery engineering-case-gallery">
+        {capture ? <div className="feature-gallery engineering-case-gallery">
           <ImagePlaceholder key={capture.image} src={`/images/projects/investome/${capture.image}`} alt={`${item.title} 코드 화면 ${activeIndex + 1}`} title={capture.file} recommendation="STS or VS Code code capture" tone="dark" />
-          {item.captures.length > 1 && <>
+          {captures.length > 1 && <>
             <button className="feature-gallery-button feature-gallery-button--previous" type="button" onClick={showPrevious} aria-label={`${item.title} 이전 코드 이미지`}>‹</button>
             <button className="feature-gallery-button feature-gallery-button--next" type="button" onClick={showNext} aria-label={`${item.title} 다음 코드 이미지`}>›</button>
-            <span className="feature-gallery-count" aria-live="polite">{String(activeIndex + 1).padStart(2, '0')} / {String(item.captures.length).padStart(2, '0')}</span>
+            <span className="feature-gallery-count" aria-live="polite">{String(activeIndex + 1).padStart(2, '0')} / {String(captures.length).padStart(2, '0')}</span>
           </>}
-        </div>
+        </div> : <div className="engineering-flow-panel">
+          <p className="engineering-panel-label">{item.flowTitle}</p>
+          <ol className="engineering-flow">
+            {item.flow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}
+          </ol>
+          <div className="engineering-code"><small>핵심 코드 발췌 · {item.codeFile}</small><pre><code>{item.code}</code></pre></div>
+        </div>}
       </div>
     </details>
   )
@@ -91,13 +101,13 @@ export default function InvestomeDetail() {
         <p className="eyebrow">개인 프로젝트</p>
         <h1>{project.title}</h1>
         <div className="detail-deck">
-          <p className="detail-summary">다양한 경제, 투자 관련 데이터와 마이페이지, 게시판 기능까지 더한 하나의 <strong>개인 투자 정보 플랫폼</strong></p>
+          <p className="detail-summary">시세·금융 정보 탐색부터 국내주식 모의투자와 자산 관리까지 연결한 <strong>개인 투자 정보 플랫폼</strong></p>
           <span>{project.period}</span>
         </div>
         <div className="detail-service-actions">
           <a className="detail-service-link" href={project.links.live} target="_blank" rel="noopener noreferrer">
             <span>Investome 홈페이지</span>
-            <span className="detail-service-arrow" aria-hidden="true">↗</span>
+            <svg className="detail-service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3A5 5 0 0 0 13 2.9l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7" /></svg>
           </a>
         </div>
       </header>
@@ -110,11 +120,11 @@ export default function InvestomeDetail() {
           <p className="lead">
             <span className="overview-line">주식 · 암호화폐 · 원자재 · 환율 · 경제 뉴스 등</span>
             <span className="overview-line"><strong>다양한 투자 정보</strong>와 나의 자산을 기록하는 마이페이지,</span>
-            <span className="overview-line">그리고 게시판까지의 흐름을 <strong>하나의 서비스</strong>로 연결했습니다.</span>
+            <span className="overview-line">국내주식 모의투자와 게시판까지 <strong>하나의 서비스</strong>로 연결했습니다.</span>
           </p>
           <dl className="project-spec">
             <div><dt>담당</dt><dd>기획 · 디자인 · 프론트엔드 · 백엔드 · 배포</dd></div>
-            <div><dt>백엔드 핵심</dt><dd>인증 구조 · 데이터 무결성 · 외부 API 안정성</dd></div>
+            <div><dt>백엔드 핵심</dt><dd>외부 API 연동 · 실시간 시세 · 주문 데이터 일관성</dd></div>
             <div><dt>기술</dt><dd>{project.stack.join(', ')}</dd></div>
             <div><dt>링크</dt><dd><a href={project.links.live} target="_blank" rel="noreferrer">서비스 ↗</a> <a href={project.links.github} target="_blank" rel="noreferrer">GitHub ↗</a></dd></div>
           </dl>
@@ -126,13 +136,13 @@ export default function InvestomeDetail() {
           <SectionLabel number="02">시스템 구조</SectionLabel>
           <div className="architecture-intro">
             <h2>서비스 데이터와 외부 API의 처리 경로를 나누어 구성했습니다.</h2>
-            <p>회원·게시판·마이페이지는 Spring Boot가 담당하고,<br />뉴스·환율·일부 시세 데이터는 Vercel Functions가 처리합니다.</p>
+            <p>인증·게시판·자산 관리·모의투자는 Spring Boot가 담당하고,<br />뉴스·환율·일부 시세 데이터는 Vercel Functions가 처리합니다.</p>
           </div>
           <div className="architecture-map" aria-label="Investome 시스템 구조">
             <div className="architecture-node architecture-node--main"><span>클라이언트</span><strong>React</strong><small>화면 · 상태 관리<br />API 요청</small></div>
             <div className="architecture-branch">
-              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 게시판<br />마이페이지</small></div>
-              <div className="architecture-node"><span>자체 데이터</span><strong>PostgreSQL</strong><small>사용자 · 게시판<br />포트폴리오</small></div>
+              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 자산 관리<br />모의투자 · 실시간 시세</small></div>
+              <div className="architecture-node"><span>자체 데이터</span><strong>PostgreSQL</strong><small>사용자 · 포트폴리오<br />모의계좌 · 보유 종목 · 주문</small></div>
             </div>
             <div className="architecture-branch">
               <div className="architecture-node"><span>외부 API 계층</span><strong>Vercel Functions</strong><small>뉴스 · 환율<br />코인 · 원자재 시세</small></div>
@@ -153,9 +163,9 @@ export default function InvestomeDetail() {
         <div className="frame">
           <SectionLabel number="04">백엔드 구현</SectionLabel>
           <div className="engineering-grid">
-            <div className="engineering-title"><h2>서비스의 안정성과 연결되는 백엔드 구현을 정리했습니다.</h2></div>
+            <div className="engineering-title"><h2>외부 데이터를 연결하고, 투자 흐름을 서버에서 처리했습니다.</h2></div>
             <div className="engineering-copy">
-              <p>인증, 요청 검증과 예외 처리, 데이터 무결성처럼 서비스의 안정성과 직접 연결되는 구현만 선별했습니다.</p>
+              <p>서로 다른 금융 API의 응답 처리, WebSocket·SSE 기반 시세 전달, 모의투자 주문의 중복·동시성 제어를 중심으로 정리했습니다. 인증과 검증은 이 흐름을 뒷받침하는 공통 기반입니다.</p>
             </div>
           </div>
           <div className="engineering-case-list">
