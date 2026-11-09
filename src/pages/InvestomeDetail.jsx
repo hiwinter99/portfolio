@@ -191,6 +191,31 @@ export default function InvestomeDetail() {
         </div>
       </section>
 
+      <section className="frame section-space troubleshooting">
+        <SectionLabel number="07">이후 개선 · Redis 공유 캐시</SectionLabel>
+        <h2>서버별 메모리 캐시에서 공유 캐시로 확장했습니다.</h2>
+        <p>초기 개발 이후 다중 서버 환경을 학습하며 암호화폐 TOP 30 조회 기능을 개선했습니다. 아래 내용은 운영 배포 성과가 아닌 로컬 구현 및 검증 결과입니다.</p>
+        <div className="case-list">
+          <details open>
+            <summary><span>01</span><strong>도입 배경과 Spring Boot 구현</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
+            <div>
+              <p><b>기존 구조</b> 외부 API 호출을 줄이기 위해 메모리 캐시를 사용했지만, 각 서버가 데이터를 따로 보관하므로 서버 간 캐시를 공유할 수 없었습니다.</p>
+              <p><b>적용</b> Spring Data Redis의 StringRedisTemplate로 코인 목록을 JSON 문자열로 저장하고 TTL을 5분으로 설정했습니다. Redis에 값이 있으면 반환하고, 없으면 외부 API를 조회한 뒤 저장하도록 구성했습니다.</p>
+              <p><b>장애 대응</b> Redis를 사용할 수 없으면 60초 이내의 메모리 캐시를 사용하고, 유효한 캐시가 없으면 외부 API를 조회합니다. 외부 조회도 실패하면 메모리에 남은 이전 목록을 반환하며, 이전 목록도 없으면 빈 목록을 반환합니다.</p>
+            </div>
+          </details>
+          <details open>
+            <summary><span>02</span><strong>실험 결과와 확인한 한계</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
+            <div>
+              <p><b>공유 검증</b> 가짜 외부 API를 사용하는 별도의 Node.js 두 프로세스 실험에서 A 요청이 끝난 뒤 B에 요청했습니다. 외부 조회는 서버별 메모리 캐시에서 총 2회, Redis 공유 캐시에서 총 1회 발생했습니다.</p>
+              <p><b>Spring Boot 검증</b> 로컬 홈페이지의 코인 요청을 Spring Boot에 연결해 실제 코인 데이터 저장을 확인했습니다. 재조회 시 TTL이 300초에서 289초로 감소한 것을 확인했고, Redis 관련 모의 테스트를 포함한 전체 자동 테스트 48개가 통과했습니다.</p>
+              <p><b>판단</b> 단일 서버의 합성 데이터 실험에서는 Redis의 평균 응답 시간이 메모리 캐시보다 길었습니다. 이번 도입에서 확인한 이점은 속도 향상보다 서버 간 캐시 공유와 외부 API 중복 조회 감소입니다.</p>
+              <p><b>한계</b> 여러 서버가 동시에 캐시 미스를 만나면 외부 조회가 중복될 수 있습니다. 현재 구현에는 분산 잠금이 없으며, 메모리에 보관한 이전 목록은 서버 재시작 후 유지되지 않습니다.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <nav className="next-project frame" aria-label="다음 페이지">
         <span>다음</span><Link to="/projects">프로젝트 목록 <b>→</b></Link>
       </nav>
