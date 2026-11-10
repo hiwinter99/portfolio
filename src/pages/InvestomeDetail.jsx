@@ -58,7 +58,7 @@ function EngineeringCase({ item, defaultOpen }) {
   const showNext = () => setActiveIndex((index) => (index + 1) % captures.length)
 
   return (
-    <details open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
+    <details className={capture ? 'engineering-case--capture' : 'engineering-case--flow'} open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
       <summary>
         <span>{item.index}</span>
         <div><strong>{item.title}</strong><small>{item.tech}</small></div>
@@ -69,9 +69,9 @@ function EngineeringCase({ item, defaultOpen }) {
       </summary>
       <div className={`engineering-case-content${capture ? '' : ' engineering-case-content--flow'}`}>
         <div className="engineering-case-copy">
-          <dl className="engineering-case-points">
-            {item.points.map(({ label, text }) => <div key={label}><dt>{label}</dt><dd>{text}</dd></div>)}
-          </dl>
+          <ul className="engineering-case-paragraphs">
+            {item.points.map(({ label, text }) => <li key={label}>{text}</li>)}
+          </ul>
           <small>{capture ? `코드 화면 · ${capture.file}` : `구현 위치 · ${item.source}`}</small>
         </div>
         {capture ? <div className="feature-gallery engineering-case-gallery">
@@ -104,12 +104,7 @@ export default function InvestomeDetail() {
           <p className="detail-summary">시세·금융 정보 탐색부터 국내주식 모의투자와 자산 관리까지 연결한 <strong>개인 투자 정보 플랫폼</strong></p>
           <span>{project.period}</span>
         </div>
-        <div className="detail-service-actions">
-          <a className="detail-service-link" href={project.links.live} target="_blank" rel="noopener noreferrer">
-            <span>Investome 홈페이지</span>
-            <svg className="detail-service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3A5 5 0 0 0 13 2.9l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7" /></svg>
-          </a>
-        </div>
+
       </header>
 
       <div className="frame"><ImagePlaceholder src={project.cover} alt="Investome 대표 화면" title="Investome — KEY VISUAL" recommendation="16:9 dashboard screenshot" tone="dark" /></div>
@@ -134,9 +129,11 @@ export default function InvestomeDetail() {
       <section className="architecture section-space">
         <div className="frame">
           <SectionLabel number="02">시스템 구조</SectionLabel>
-          <div className="architecture-intro">
-            <h2>서비스 데이터와 외부 API의 처리 경로를 나누어 구성했습니다.</h2>
-            <p>인증·게시판·자산 관리·모의투자는 Spring Boot가 담당하고,<br />뉴스·환율·일부 시세 데이터는 Vercel Functions가 처리합니다.</p>
+          <div className="architecture-intro architecture-intro--compact">
+            <h2>
+              <span>인증·게시판·자산 관리·모의투자는 Spring Boot에서,</span>
+              <span>뉴스·환율·일부 시세는 Vercel Functions에서 처리합니다.</span>
+            </h2>
           </div>
           <div className="architecture-map" aria-label="Investome 시스템 구조">
             <div className="architecture-node architecture-node--main"><span>클라이언트</span><strong>React</strong><small>화면 · 상태 관리<br />API 요청</small></div>
@@ -162,11 +159,8 @@ export default function InvestomeDetail() {
       <section className="engineering section-space">
         <div className="frame">
           <SectionLabel number="04">백엔드 구현</SectionLabel>
-          <div className="engineering-grid">
-            <div className="engineering-title"><h2>외부 데이터를 연결하고, 투자 흐름을 서버에서 처리했습니다.</h2></div>
-            <div className="engineering-copy">
-              <p>서로 다른 금융 API의 응답 처리, WebSocket·SSE 기반 시세 전달, 모의투자 주문의 중복·동시성 제어를 중심으로 정리했습니다. 인증과 검증은 이 흐름을 뒷받침하는 공통 기반입니다.</p>
-            </div>
+          <div className="engineering-intro--compact">
+            <p>서로 다른 금융 API의 응답 처리, WebSocket·SSE 기반 시세 전달, 모의투자 주문의 중복·동시성 제어를 중심으로 정리했습니다.</p>
           </div>
           <div className="engineering-case-list">
             {backendEngineeringCases.map((item, index) => <EngineeringCase item={item} defaultOpen={index === 0} key={item.index} />)}
@@ -174,23 +168,8 @@ export default function InvestomeDetail() {
         </div>
       </section>
 
-      <section className="frame section-space refactoring">
-        <SectionLabel number="05">리팩터링</SectionLabel>
-        <div className="refactor-heading"><h2>반복 구현을 공통 처리로 옮기고 책임을 분리했습니다.</h2><p>동작을 바꾸기보다 각 처리가 있어야 할 위치를 다시 정리했습니다.</p></div>
-        <div className="comparison">
-          <div className="comparison-head"><span>변경 전</span><span>변경 후</span></div>
-          {[
-            ['Controller의 JWT 직접 파싱', 'JWT Filter의 공통 인증 처리'],
-            ['Service의 입력 형식 검증', 'Request DTO Validation'],
-            ['Service의 HTTP 응답 결정', 'Custom Exception과 전역 예외 처리'],
-            ['CoinGecko Top30 필드 직접 사용', 'Vercel에서 공통 랭킹 형식으로 변환'],
-          ].map(([before, after]) => <div className="comparison-row" key={before}><p>{before}</p><span>→</span><p>{after}</p></div>)}
-        </div>
-      </section>
-
       <section className="frame section-space troubleshooting">
-        <SectionLabel number="06">문제 해결</SectionLabel>
-        <h2>배포와 운영 과정에서 마주한 문제를 해결했습니다.</h2>
+        <SectionLabel number="05">문제 해결</SectionLabel>
         <div className="case-list">
           <details open>
             <summary><span>01</span><strong>Vercel 배포 후 /api/ticker 404</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
@@ -208,7 +187,7 @@ export default function InvestomeDetail() {
       </section>
 
       <section className="frame section-space troubleshooting">
-        <SectionLabel number="07">이후 개선 · Redis 공유 캐시</SectionLabel>
+        <SectionLabel number="06">이후 개선 · Redis 공유 캐시</SectionLabel>
         <h2>서버별 메모리 캐시에서 공유 캐시로 확장했습니다.</h2>
         <p>초기 개발 이후 다중 서버 환경을 학습하며 암호화폐 TOP 30 조회 기능을 개선했습니다. 아래 내용은 운영 배포 성과가 아닌 로컬 구현 및 검증 결과입니다.</p>
         <div className="case-list">

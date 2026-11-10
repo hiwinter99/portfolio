@@ -6,9 +6,9 @@ export const projects = [
 ]
 
 export const investomeFeatures = [
-  { index: '01', title: 'Market Dashboard', body: '주식·가상자산의 현재가와 등락률, 환율, 금융 뉴스를 한 화면에서 탐색합니다.', implementation: '공급자별 응답을 공통 필드로 변환하고 캐시와 종목별 독립 처리로 일부 실패를 격리했습니다.', images: ['dashboard.png', 'dashboard2.png'], recommendation: '16:9 desktop screenshot' },
-  { index: '02', title: 'Paper Trading', body: '당일 코스피 TOP 30을 대상으로 가상 자금으로 매수·매도하고, 보유 종목·잔액·주문 내역을 확인합니다.', implementation: '주문 가격은 서버에서 조회하고, 계좌 잠금과 트랜잭션으로 잔액·보유 수량·체결 기록을 함께 처리합니다. 실시간 시세는 KIS WebSocket에서 받아 SSE로 전달합니다.', flow: ['오늘의 코스피 TOP 30 선택', '서버 시세로 매수·매도 요청', '잔액·보유 종목·주문 이력 갱신', '체결 결과와 자산 현황 확인'] },
-  { index: '03', title: 'Portfolio Management', body: '인증된 사용자의 보유 종목과 목표 금액을 저장하고 본인의 데이터만 조회합니다.', implementation: '인증 사용자 ID를 저장·조회 조건으로 사용해 사용자별 포트폴리오 데이터를 분리했습니다.', images: ['portfolio.png', 'portfolio2.png'], recommendation: 'portfolio summary + holdings' },
-  { index: '04', title: 'Community', body: '게시글, 댓글, 추천을 제공하며 연관 데이터의 삭제 순서와 무결성을 관리합니다.', implementation: '작성자 권한을 검증하고 트랜잭션 안에서 추천·댓글·게시글의 삭제 순서를 관리했습니다.', images: ['community.png', 'community2.png'], recommendation: 'post detail + comments' },
+  { index: '01', title: '시세·종목 조회', body: '주식·가상자산의 현재가와 등락률, 환율, 금융 뉴스를 한 화면에서 탐색합니다.', images: ['dashboard.png', 'dashboard2.png'], recommendation: '16:9 desktop screenshot' },
+  { index: '02', title: '모의투자', images: ['paper-trading.png'], recommendation: '모의투자 화면 캡처', body: '당일 코스피 TOP 30을 대상으로 가상 자금으로 매수·매도하고, 보유 종목·잔액·주문 내역을 확인합니다.', flow: ['코스피 종목 중 투자할 종목과 주문 수량 선택', '한국투자증권 API로 서버에서 현재가를 확인해 매수·매도 처리', '체결 결과에 따라 잔액과 보유 수량을 갱신하고 주문 이력 저장', '보유 종목의 평가금액·수익률과 매수·매도 내역 확인'] },
+  { index: '03', title: '포트폴리오 관리', body: '보유 종목과 목표 금액을 기록하고 나의 자산 현황을 확인합니다.', images: ['portfolio.png', 'portfolio2.png'], recommendation: 'portfolio summary + holdings' },
+  { index: '04', title: '게시판·댓글', body: '게시글을 작성하고 댓글과 추천으로 투자에 관한 의견을 나눕니다.', images: ['community.png', 'community2.png'], recommendation: 'post detail + comments' },
 ]
 

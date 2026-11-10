@@ -8,25 +8,26 @@ export default function ProjectFeature({ feature, reverse = false }) {
   const showNext = () => setActiveIndex((index) => (index + 1) % images.length)
 
   return (
-    <article className={`feature-row ${reverse ? 'feature-row--reverse' : ''}`}>
+    <article className={`feature-row ${reverse ? 'feature-row--reverse' : ''}${feature.flow ? ' feature-row--paper' : ''}`}>
       <div className="feature-copy">
         <span className="feature-index">{feature.index}</span>
         <h3>{feature.title}</h3>
         <p>{feature.body}</p>
-        {feature.implementation && <p className="feature-implementation"><span>구현</span>{feature.implementation}</p>}
+        {feature.flow && <>
+          <ol className="feature-flow-steps">
+            {feature.flow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}
+          </ol>
+          <small className="feature-paper-note">실제 주문·금전 거래가 없는 가상 투자 기능입니다.</small>
+        </>}
       </div>
-      {feature.flow ? <div className="paper-feature-flow">
-        <span className="paper-feature-label">모의투자 흐름</span>
-        <ol>{feature.flow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}</ol>
-        <small>실제 주문·금전 거래가 없는 가상 투자 기능입니다.</small>
-      </div> : <div className="feature-gallery">
+      <div className="feature-gallery">
         <ImagePlaceholder key={images[activeIndex]} src={`/images/projects/investome/${images[activeIndex]}`} alt={`${feature.title} 화면 ${activeIndex + 1}`} title={feature.title.toUpperCase()} recommendation={feature.recommendation} />
         {images.length > 1 && <>
           <button className="feature-gallery-button feature-gallery-button--previous" type="button" onClick={showPrevious} aria-label={`${feature.title} 이전 이미지`}>‹</button>
           <button className="feature-gallery-button feature-gallery-button--next" type="button" onClick={showNext} aria-label={`${feature.title} 다음 이미지`}>›</button>
           <span className="feature-gallery-count" aria-live="polite">{String(activeIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}</span>
         </>}
-      </div>}
+      </div>
     </article>
   )
 }

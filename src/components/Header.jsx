@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { projects } from '../data/projects'
+import LinkIcon from './LinkIcon'
 
 const navigation = [
   { id: 'projects', label: 'Projects' },
@@ -46,12 +48,19 @@ export default function Header() {
   }
 
   const isProjectDetail = pathname.startsWith('/projects/')
+  const currentProject = projects.find(project => pathname === `/projects/${project.slug}`)
 
   return (
     <header className={`site-header frame${isProjectDetail ? ' site-header--detail' : ''}`}>
       <NavLink className="wordmark" to="/" onClick={handleLogoClick} aria-label="홈 최상단으로 이동">KDG<span className="wordmark-dot">.</span></NavLink>
       {isProjectDetail ? (
-        <NavLink className="detail-home-link" to="/">← 홈으로</NavLink>
+        <nav className="detail-header-actions" aria-label="프로젝트 이동">
+          <NavLink className="detail-home-link" to="/">← 홈으로</NavLink>
+          {currentProject?.links.live && <a className="header-service-link" href={currentProject.links.live} target="_blank" rel="noopener noreferrer">
+            <LinkIcon />
+            <span>{currentProject.title} 홈페이지</span>
+          </a>}
+        </nav>
       ) : (
         <>
           <nav className="nav" aria-label="주요 메뉴">
