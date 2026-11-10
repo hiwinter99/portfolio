@@ -1118,3 +1118,5 @@ details[open] > summary .accordion-action-closed { display: none; }
 /* Blend the architecture illustration into its section background. */
 .architecture-comparison a { border: 0; }
 .architecture-comparison img { background: transparent; }
+
+.profile-headline { white-space: pre-line; }

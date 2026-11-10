@@ -9,7 +9,7 @@ export const profile = {
   phone: '010-5017-6894',
   githubLabel: 'Kimdonggyu26',
   githubUrl: 'https://github.com/Kimdonggyu26',
-  headline: '빠르게 이해하고 적용하는 신입 개발자입니다.',
+  headline: '금융 IT 전문 개발자로 성장하고 싶습니다.\n성실하게 배우고 능동적으로 문제를 해결하려 노력합니다.',
   summary: 'Java와 Spring Boot를 중심으로 직접 서비스를 만들며, 새로운 기술과 문제를 마주할 때 \n그 이유와 흐름에 집중하고자 합니다.',
 }
 
