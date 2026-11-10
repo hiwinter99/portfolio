@@ -1120,3 +1120,8 @@ details[open] > summary .accordion-action-closed { display: none; }
 .architecture-comparison img { background: transparent; }
 
 .profile-headline { white-space: pre-line; }
+
+/* Fit the two introductory sentences to the available text column. */
+.profile-copy { container-type: inline-size; }
+.profile-headline { max-width: none; font-size: clamp(10px, 3cqw, 22px); line-height: 1.8; white-space: normal; }
+.profile-headline > span { display: block; white-space: nowrap; }

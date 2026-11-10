@@ -33,7 +33,7 @@ export default function Home() {
           <div className="profile-copy">
             <div className="profile-title"><p>{profile.position}</p><span>{profile.englishName}</span></div>
             <h1>{profile.name}</h1>
-            <p className="profile-headline">{profile.headline}</p>
+            <p className="profile-headline">{profile.headline.split('\n').map(line => <span key={line}>{line}</span>)}</p>
             <div className="profile-actions">
               <Link className="primary-link" to="/projects">Projects <span>→</span></Link>
               <a className="plain-link" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
