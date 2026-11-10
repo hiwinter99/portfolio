@@ -79,7 +79,7 @@ export default function InvestomeDetail() {
             <div><dt>담당</dt><dd>기획 · 디자인 · 프론트엔드 · 백엔드 · 배포</dd></div>
             <div><dt>백엔드 핵심</dt><dd>외부 API 연동 · 실시간 시세 전달 · 중복 주문 및 잔액 처리</dd></div>
             <div><dt>기술</dt><dd>{project.stack.join(', ')}</dd></div>
-            <div><dt>링크</dt><dd className="project-spec-links"><a href={project.links.live} target="_blank" rel="noopener noreferrer"><span>서비스</span><LinkIcon /></a><a href={project.links.github} target="_blank" rel="noopener noreferrer"><span>GitHub</span><LinkIcon /></a></dd></div>
+            <div><dt>링크</dt><dd className="project-spec-links"><a href={project.links.live} target="_blank" rel="noopener noreferrer"><span>서비스</span><LinkIcon /></a><a href={project.links.github} target="_blank" rel="noopener noreferrer"><span>프론트엔드 GitHub</span><LinkIcon /></a><a href="https://github.com/hiwinter99/investome-backend" target="_blank" rel="noopener noreferrer"><span>백엔드 GitHub</span><LinkIcon /></a></dd></div>
           </dl>
         </div>
       </section>
