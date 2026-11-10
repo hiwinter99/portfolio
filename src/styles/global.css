@@ -1125,3 +1125,9 @@ details[open] > summary .accordion-action-closed { display: none; }
 .profile-copy { container-type: inline-size; }
 .profile-headline { max-width: none; font-size: clamp(10px, 3cqw, 22px); line-height: 1.8; white-space: normal; }
 .profile-headline > span { display: block; white-space: nowrap; }
+
+.project-title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 18px 28px; }
+.project-visit-link { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 5px; color: var(--signal); font-size: .88rem; font-weight: 500; border-bottom: 1px solid currentColor; }
+.project-visit-link svg { width: 17px; height: 17px; }
+.project-visit-link:hover { color: var(--ink); }
+.project-visit-link:focus-visible { outline: 2px solid var(--signal); outline-offset: 5px; }
