@@ -109,7 +109,7 @@ export default function Home() {
           <div className="contact-callout">
             <p>Backend Developer</p>
             <h2>궁금한 점이 있다면<br />편하게 연락해주세요.</h2>
-            <dl><div><dt>Email</dt><dd><a href={'mailto:' + profile.email}>{profile.email}</a></dd></div><div><dt>Phone</dt><dd><a href="tel:01000000000">{profile.phone}</a></dd></div><div><dt>GitHub</dt><dd><a href={profile.githubUrl} target="_blank" rel="noreferrer">{profile.githubLabel} ↗</a></dd></div></dl>
+            <dl><div><dt>Email</dt><dd><a href={'mailto:' + profile.email}>{profile.email}</a></dd></div><div><dt>Phone</dt><dd><a href={'tel:' + profile.phone.replace(/-/g, '')}>{profile.phone}</a></dd></div><div><dt>GitHub</dt><dd><a href={profile.githubUrl} target="_blank" rel="noreferrer">{profile.githubLabel} ↗</a></dd></div></dl>
           </div>
         </div>
       </section>

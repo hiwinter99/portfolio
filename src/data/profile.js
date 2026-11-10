@@ -6,7 +6,7 @@ export const profile = {
   birth: '1999.01.04',
   location: 'Seoul, Korea',
   email: 'hiwinter99@gmail.com',
-  phone: '010-0000-0000',
+  phone: '010-5017-6894',
   githubLabel: 'Kimdonggyu26',
   githubUrl: 'https://github.com/Kimdonggyu26',
   headline: '빠르게 이해하고 적용하는 신입 개발자입니다.',
