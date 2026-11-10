@@ -17,7 +17,6 @@ export default function ProjectFeature({ feature, reverse = false }) {
           <ol className="feature-flow-steps">
             {feature.flow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}
           </ol>
-          <small className="feature-paper-note">실제 주문·금전 거래가 없는 가상 투자 기능입니다.</small>
         </>}
       </div>
       <div className="feature-gallery">

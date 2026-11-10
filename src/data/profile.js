@@ -16,7 +16,7 @@ export const profile = {
 export const profileHighlights = [
   { label: 'Position', value: '신입 백엔드 개발자' },
   { label: 'Education', value: '구디아카데미 · Java 개발자 과정' },
-  { label: 'Certification', value: '정보처리기사 · SQLD' },
+  { label: 'Certification', value: '정보처리기사 · SQLD · 워드프로세서' },
 ]
 
 export const skills = [

@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import InvestomeDetail from './pages/InvestomeDetail'
-import ProjectPlaceholder from './pages/ProjectPlaceholder'
+import TeamProjectDetail from './pages/TeamProjectDetail'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -18,9 +18,8 @@ export default function App() {
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
     <Route path="/projects/investome" element={<InvestomeDetail />} />
-    <Route path="/projects/cruella" element={<ProjectPlaceholder slug="cruella" />} />
-    <Route path="/projects/mvp" element={<ProjectPlaceholder slug="mvp" />} />
-    <Route path="/projects/myvitaday" element={<ProjectPlaceholder slug="myvitaday" />} />
+    <Route path="/projects/cruella" element={<TeamProjectDetail slug="cruella" />} />
+    <Route path="/projects/mvp" element={<TeamProjectDetail slug="mvp" />} />
   </Routes></main><Footer /></div>
 }
 

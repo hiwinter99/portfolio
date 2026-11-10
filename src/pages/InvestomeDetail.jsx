@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ImagePlaceholder from '../components/ImagePlaceholder'
 import ProjectFeature from '../components/ProjectFeature'
+import CodeCaptureGallery from '../components/CodeCaptureGallery'
 import SectionLabel from '../components/SectionLabel'
+import LinkIcon from '../components/LinkIcon'
 import { investomeFeatures, projects } from '../data/projects'
 import { coreEngineeringCases } from '../data/investomeEngineering'
 
@@ -10,40 +12,12 @@ const project = projects[0]
 
 const supportingEngineeringCases = [
   {
-    index: '04',
+    index: '05',
+    captureAspect: '1466 / 836',
     title: 'JWT 인증과 SecurityContext',
     tech: 'OncePerRequestFilter · Spring Security',
-    points: [
-      { label: '기존 문제', text: 'Controller마다 토큰 검증과 사용자 식별을 반복했습니다.' },
-      { label: '적용 구조', text: 'JWT 검증을 JwtAuthenticationFilter의 공통 처리로 옮겼습니다.' },
-      { label: '현재 흐름', text: '검증된 사용자를 Authentication으로 만들어 SecurityContext에 저장합니다.' },
-    ],
+    description: 'JWT 필터에서 토큰을 검증하고 인증 정보를 SecurityContext에 저장합니다.\n인증된 사용자 ID를 기준으로 본인의 포트폴리오와 모의계좌에 접근하도록 구현했습니다.',
     captures: [{ image: 'backend-auth.png', file: 'JwtAuthenticationFilter.java' }],
-  },
-  {
-    index: '05',
-    title: '요청 검증과 공통 예외 응답',
-    tech: 'Bean Validation · RestControllerAdvice',
-    points: [
-      { label: '기존 문제', text: '입력 형식 검증과 HTTP 예외 처리가 Service에 섞여 있었습니다.' },
-      { label: '적용 구조', text: 'Request DTO와 @Valid, Custom Exception으로 책임을 분리했습니다.' },
-      { label: '현재 흐름', text: 'GlobalExceptionHandler가 예외를 일관된 ErrorResponse로 변환합니다.' },
-    ],
-    captures: [
-      { image: 'backend-validation.png', file: 'SignupRequest.java' },
-      { image: 'backend-exception.png', file: 'GlobalExceptionHandler.java' },
-    ],
-  },
-  {
-    index: '06',
-    title: '연관 데이터 삭제와 트랜잭션',
-    tech: '@Transactional · Spring Data JPA',
-    points: [
-      { label: '기존 문제', text: '게시글을 먼저 삭제하면 댓글과 추천의 외래 키 충돌이 발생했습니다.' },
-      { label: '적용 구조', text: '삭제 작업을 하나의 트랜잭션으로 묶고 처리 순서를 명시했습니다.' },
-      { label: '현재 흐름', text: '추천, 댓글, 게시글 순서로 연관 데이터를 안전하게 삭제합니다.' },
-    ],
-    captures: [{ image: 'backend-transaction.png', file: 'BoardService.java · deletePost()' }],
   },
 ]
 
@@ -51,14 +25,10 @@ const backendEngineeringCases = [...coreEngineeringCases, ...supportingEngineeri
 
 function EngineeringCase({ item, defaultOpen }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const captures = item.captures || []
-  const capture = captures[activeIndex]
-  const showPrevious = () => setActiveIndex((index) => (index - 1 + captures.length) % captures.length)
-  const showNext = () => setActiveIndex((index) => (index + 1) % captures.length)
+  const hasFlow = Boolean(item.flow)
 
   return (
-    <details className={capture ? 'engineering-case--capture' : 'engineering-case--flow'} open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
+    <details className={hasFlow ? 'engineering-case--flow' : 'engineering-case--capture'} open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
       <summary>
         <span>{item.index}</span>
         <div><strong>{item.title}</strong><small>{item.tech}</small></div>
@@ -67,27 +37,15 @@ function EngineeringCase({ item, defaultOpen }) {
           <span className="accordion-action-closed">구현 보기 ↓</span>
         </span>
       </summary>
-      <div className={`engineering-case-content${capture ? '' : ' engineering-case-content--flow'}`}>
-        <div className="engineering-case-copy">
-          <ul className="engineering-case-paragraphs">
-            {item.points.map(({ label, text }) => <li key={label}>{text}</li>)}
-          </ul>
-          <small>{capture ? `코드 화면 · ${capture.file}` : `구현 위치 · ${item.source}`}</small>
-        </div>
-        {capture ? <div className="feature-gallery engineering-case-gallery">
-          <ImagePlaceholder key={capture.image} src={`/images/projects/investome/${capture.image}`} alt={`${item.title} 코드 화면 ${activeIndex + 1}`} title={capture.file} recommendation="STS or VS Code code capture" tone="dark" />
-          {captures.length > 1 && <>
-            <button className="feature-gallery-button feature-gallery-button--previous" type="button" onClick={showPrevious} aria-label={`${item.title} 이전 코드 이미지`}>‹</button>
-            <button className="feature-gallery-button feature-gallery-button--next" type="button" onClick={showNext} aria-label={`${item.title} 다음 코드 이미지`}>›</button>
-            <span className="feature-gallery-count" aria-live="polite">{String(activeIndex + 1).padStart(2, '0')} / {String(captures.length).padStart(2, '0')}</span>
-          </>}
-        </div> : <div className="engineering-flow-panel">
+      <div className="engineering-case-content engineering-case-content--stacked">
+        <p className="engineering-case-description">{item.description}</p>
+        {hasFlow ? <div className="engineering-flow-panel">
           <p className="engineering-panel-label">{item.flowTitle}</p>
           <ol className="engineering-flow">
             {item.flow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>)}
           </ol>
-          <div className="engineering-code"><small>핵심 코드 발췌 · {item.codeFile}</small><pre><code>{item.code}</code></pre></div>
-        </div>}
+          <CodeCaptureGallery captures={item.captures} title={item.title} aspect={item.captureAspect} />
+        </div> : <CodeCaptureGallery captures={item.captures} title={item.title} aspect={item.captureAspect} />}
       </div>
     </details>
   )
@@ -101,7 +59,7 @@ export default function InvestomeDetail() {
         <p className="eyebrow">개인 프로젝트</p>
         <h1>{project.title}</h1>
         <div className="detail-deck">
-          <p className="detail-summary">시세·금융 정보 탐색부터 국내주식 모의투자와 자산 관리까지 연결한 <strong>개인 투자 정보 플랫폼</strong></p>
+          <p className="detail-summary">시세·금융 정보 조회부터 국내주식 모의투자와 자산 관리까지 연결한 <strong>개인 투자 정보 플랫폼</strong></p>
           <span>{project.period}</span>
         </div>
 
@@ -119,9 +77,9 @@ export default function InvestomeDetail() {
           </p>
           <dl className="project-spec">
             <div><dt>담당</dt><dd>기획 · 디자인 · 프론트엔드 · 백엔드 · 배포</dd></div>
-            <div><dt>백엔드 핵심</dt><dd>외부 API 연동 · 실시간 시세 · 주문 데이터 일관성</dd></div>
+            <div><dt>백엔드 핵심</dt><dd>외부 API 연동 · 실시간 시세 전달 · 중복 주문 및 잔액 처리</dd></div>
             <div><dt>기술</dt><dd>{project.stack.join(', ')}</dd></div>
-            <div><dt>링크</dt><dd><a href={project.links.live} target="_blank" rel="noreferrer">서비스 ↗</a> <a href={project.links.github} target="_blank" rel="noreferrer">GitHub ↗</a></dd></div>
+            <div><dt>링크</dt><dd className="project-spec-links"><a href={project.links.live} target="_blank" rel="noopener noreferrer"><span>서비스</span><LinkIcon /></a><a href={project.links.github} target="_blank" rel="noopener noreferrer"><span>GitHub</span><LinkIcon /></a></dd></div>
           </dl>
         </div>
       </section>
@@ -135,24 +93,21 @@ export default function InvestomeDetail() {
               <span>뉴스·환율·일부 시세는 Vercel Functions에서 처리합니다.</span>
             </h2>
           </div>
-          <div className="architecture-map" aria-label="Investome 시스템 구조">
-            <div className="architecture-node architecture-node--main"><span>클라이언트</span><strong>React</strong><small>화면 · 상태 관리<br />API 요청</small></div>
-            <div className="architecture-branch">
-              <div className="architecture-node"><span>핵심 서버</span><strong>Spring Boot</strong><small>인증 · 자산 관리<br />모의투자 · 실시간 시세</small></div>
-              <div className="architecture-node"><span>자체 데이터</span><strong>PostgreSQL</strong><small>사용자 · 포트폴리오<br />모의계좌 · 보유 종목 · 주문</small></div>
-            </div>
-            <div className="architecture-branch">
-              <div className="architecture-node"><span>외부 API 계층</span><strong>Vercel Functions</strong><small>뉴스 · 환율<br />코인 · 원자재 시세</small></div>
-              <div className="architecture-node"><span>데이터 제공처</span><strong>금융 API</strong><small>KIS · Yahoo<br />CoinGecko · Upbit</small></div>
-            </div>
-          </div>
+          <figure className="architecture-comparison">
+            <a href="/images/architecture-preview/investome-architecture.svg" target="_blank" rel="noopener noreferrer" aria-label="시스템 구성도 크게 보기">
+              <img src="/images/architecture-preview/investome-architecture.svg" alt="React에서 Spring Boot 및 Vercel Functions로 보내는 요청과 KIS 시세 전달, PostgreSQL 저장 흐름" />
+            </a>
+          </figure>
         </div>
       </section>
 
       <section className="frame section-space">
         <SectionLabel number="03">주요 기능</SectionLabel>
         <div className="feature-list">
-          {investomeFeatures.map((feature, index) => <ProjectFeature key={feature.title} feature={feature} reverse={index % 2 === 1} />)}
+          {investomeFeatures.slice(0, 2).map((feature, index) => <ProjectFeature key={feature.title} feature={feature} reverse={index % 2 === 1} />)}
+          <div className="feature-secondary-grid">
+            {investomeFeatures.slice(2).map((feature) => <ProjectFeature key={feature.title} feature={feature} />)}
+          </div>
         </div>
       </section>
 
@@ -160,7 +115,7 @@ export default function InvestomeDetail() {
         <div className="frame">
           <SectionLabel number="04">백엔드 구현</SectionLabel>
           <div className="engineering-intro--compact">
-            <p>서로 다른 금융 API의 응답 처리, WebSocket·SSE 기반 시세 전달, 모의투자 주문의 중복·동시성 제어를 중심으로 정리했습니다.</p>
+            <p>서로 다른 금융 API의 응답 처리, WebSocket·SSE 기반 시세 전달, 모의투자 주문의 중복·동시성 제어 중심</p>
           </div>
           <div className="engineering-case-list">
             {backendEngineeringCases.map((item, index) => <EngineeringCase item={item} defaultOpen={index === 0} key={item.index} />)}
@@ -169,43 +124,31 @@ export default function InvestomeDetail() {
       </section>
 
       <section className="frame section-space troubleshooting">
-        <SectionLabel number="05">문제 해결</SectionLabel>
-        <div className="case-list">
+        <SectionLabel number="05">문제 해결 및 검증</SectionLabel>
+        <div className="case-list case-list--focused">
           <details open>
-            <summary><span>01</span><strong>Vercel 배포 후 /api/ticker 404</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> <code>/api/ticker</code>는 Vite 개발 서버의 middleware에만 있어 Vercel 운영 환경에는 endpoint가 없었습니다.</p><p><b>판단</b> 브라우저의 직접 외부 호출은 임시 우회였고, 운영 환경에서 실행되는 서버 API가 필요했습니다.</p><p><b>해결</b> Vite middleware의 외부 API 처리를 Vercel Functions의 <code>/api</code> endpoint로 옮겼습니다.</p><p><b>결과</b> 개발과 배포 환경에서 동일한 <code>/api</code> 요청 경로를 사용할 수 있게 됐습니다.</p></div>
-          </details>
-          <details>
-            <summary><span>02</span><strong>외부 API 실패와 누락 데이터</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> 공급자가 응답해도 가격 필드가 비어 있거나 일부 종목 요청만 실패할 수 있었습니다.</p><p><b>판단</b> HTTP 성공 여부와 화면에 사용할 데이터의 완전성을 별도로 확인해야 했습니다.</p><p><b>해결</b> KIS → Yahoo 대체, Yahoo quote → chart 보완, 종목별 독립 처리와 stale cache를 적용했습니다.</p><p><b>결과</b> 일부 공급자나 종목의 실패가 전체 목록 실패로 이어지지 않도록 개선했습니다.</p></div>
-          </details>
-          <details>
-            <summary><span>03</span><strong>게시글 삭제 시 연관 데이터 충돌</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
-            <div><p><b>원인</b> 추천과 댓글이 게시글을 참조한 상태에서 게시글 삭제가 먼저 시도됐습니다.</p><p><b>판단</b> 부모 데이터보다 외래 키로 연결된 연관 데이터를 먼저 정리해야 했습니다.</p><p><b>해결</b> <code>@Transactional</code> 안에서 추천 → 댓글 → 게시글 순서로 삭제하도록 명시했습니다.</p><p><b>결과</b> 외래 키 충돌 없이 게시글과 연관 데이터를 함께 삭제할 수 있게 됐습니다.</p></div>
-          </details>
-        </div>
-      </section>
-
-      <section className="frame section-space troubleshooting">
-        <SectionLabel number="06">이후 개선 · Redis 공유 캐시</SectionLabel>
-        <h2>서버별 메모리 캐시에서 공유 캐시로 확장했습니다.</h2>
-        <p>초기 개발 이후 다중 서버 환경을 학습하며 암호화폐 TOP 30 조회 기능을 개선했습니다. 아래 내용은 운영 배포 성과가 아닌 로컬 구현 및 검증 결과입니다.</p>
-        <div className="case-list">
-          <details open>
-            <summary><span>01</span><strong>도입 배경과 Spring Boot 구현</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
+            <summary><span>01</span><strong>중복 주문과 저장 실패 테스트</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
             <div>
-              <p><b>기존 구조</b> 외부 API 호출을 줄이기 위해 메모리 캐시를 사용했지만, 각 서버가 데이터를 따로 보관하므로 서버 간 캐시를 공유할 수 없었습니다.</p>
-              <p><b>적용</b> Spring Data Redis의 StringRedisTemplate로 코인 목록을 JSON 문자열로 저장하고 TTL을 5분으로 설정했습니다. Redis에 값이 있으면 반환하고, 없으면 외부 API를 조회한 뒤 저장하도록 구성했습니다.</p>
-              <p><b>장애 대응</b> Redis를 사용할 수 없으면 60초 이내의 메모리 캐시를 사용하고, 유효한 캐시가 없으면 외부 API를 조회합니다. 외부 조회도 실패하면 메모리에 남은 이전 목록을 반환하며, 이전 목록도 없으면 빈 목록을 반환합니다.</p>
+              <p>자동 테스트로 같은 주문을 동시에 두 번 보내도 한 번만 처리되는지 확인했습니다. 잔액이 부족한 상태에서 주문이 겹치는 경우도 테스트했습니다.</p>
+              <p>주문 저장을 일부러 실패시켰을 때는 잔액과 보유 수량도 함께 원래 상태로 돌아오는지 확인했습니다.</p>
             </div>
           </details>
-          <details open>
-            <summary><span>02</span><strong>실험 결과와 확인한 한계</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
+          <details>
+            <summary><span>02</span><strong>가격이 없는 종목 처리</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
             <div>
-              <p><b>공유 검증</b> 가짜 외부 API를 사용하는 별도의 Node.js 두 프로세스 실험에서 A 요청이 끝난 뒤 B에 요청했습니다. 외부 조회는 서버별 메모리 캐시에서 총 2회, Redis 공유 캐시에서 총 1회 발생했습니다.</p>
-              <p><b>Spring Boot 검증</b> 로컬 홈페이지의 코인 요청을 Spring Boot에 연결해 실제 코인 데이터 저장을 확인했습니다. 재조회 시 TTL이 300초에서 289초로 감소한 것을 확인했고, Redis 관련 모의 테스트를 포함한 전체 자동 테스트 48개가 통과했습니다.</p>
-              <p><b>판단</b> 단일 서버의 합성 데이터 실험에서는 Redis의 평균 응답 시간이 메모리 캐시보다 길었습니다. 이번 도입에서 확인한 이점은 속도 향상보다 서버 간 캐시 공유와 외부 API 중복 조회 감소입니다.</p>
-              <p><b>한계</b> 여러 서버가 동시에 캐시 미스를 만나면 외부 조회가 중복될 수 있습니다. 현재 구현에는 분산 잠금이 없으며, 메모리에 보관한 이전 목록은 서버 재시작 후 유지되지 않습니다.</p>
+              <p>API 요청이 성공해도 가격이 비어 있는 종목이 있었습니다. 응답 상태만 확인해서는 부족해 가격 값도 확인하고, 누락된 가격은 다른 조회 방식으로 보완했습니다.</p>
+              <p>새 순위를 가져오지 못할 때는 이전에 저장한 목록을 사용하도록 했습니다.</p>
+            </div>
+          </details>
+          <details>
+            <summary><span>03</span><strong>Nginx 요청 분배와 서버 종료 실험</strong><span className="accordion-action"><span className="accordion-action-open">접기 ↑</span><span className="accordion-action-closed">내용 보기 ↓</span></span></summary>
+            <div>
+              <p>로컬에서 Spring Boot 서버 두 개를 켜고 Nginx로 요청을 나눠 보내봤습니다. k6 테스트에서는 두 서버가 요청을 절반씩 처리했습니다.</p>
+              <p>이후 한 서버를 직접 종료하고, Nginx가 다른 서버로 다시 연결을 시도하는 것도 응답 헤더에서 확인했습니다.</p>
+              <details className="validation-evidence">
+                <summary>실험 수치 보기</summary>
+                <p>로컬 · k6 가상 사용자 20개 · 30초 실행<br />서버 A/B 각각 62,772건 · HTTP 오류 0건 · 백엔드 재시도 0건<br />서버 종료 실험에서는 X-Backend에 B → A 연결 시도 기록을 확인했습니다.</p>
+              </details>
             </div>
           </details>
         </div>

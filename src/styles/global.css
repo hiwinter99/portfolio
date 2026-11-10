@@ -1014,3 +1014,107 @@ details[open] > summary .accordion-action-closed { display: none; }
   .engineering-case-list summary > .accordion-action { position: static; transform: none; }
   .engineering-case-content { grid-template-columns: 1fr; }
 }
+
+
+/* Center the introduction inside its vertical rule and unify link icons. */
+.overview-grid .lead { display: flex; flex-direction: column; justify-content: center; }
+.project-spec-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
+.project-spec .project-spec-links a { display: inline-flex; align-items: center; gap: 7px; margin: 0; }
+.project-spec-links svg { width: 16px; height: 16px; flex: 0 0 auto; }
+
+/* Preserve code screenshots without cropping; keep each carousel's height stable. */
+.code-capture-gallery { margin: 0; min-width: 0; border: 1px solid #6f91a5; background: #111; }
+.code-capture-stage { position: relative; min-width: 0; }
+.code-capture-stage > a { position: absolute; inset: 0; display: block; }
+.code-capture-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.code-capture-stage button { position: absolute; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 30px; height: 38px; border: 1px solid #7a95a6; color: #fff; background: rgb(8 25 36 / 85%); font-size: 1.6rem; cursor: pointer; }
+.code-capture-prev { left: 4px; }
+.code-capture-next { right: 4px; }
+.code-capture-gallery figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 12px 14px; background: #0c293c; color: #bdd1dc; font-size: .7rem; line-height: 1.6; }
+.code-capture-gallery figcaption > span:first-child { flex: 1 1 200px; overflow-wrap: anywhere; }
+.code-capture-gallery figcaption a { color: var(--sky); text-decoration: underline; text-underline-offset: 3px; }
+.code-capture-gallery button:focus-visible, .code-capture-gallery a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+/* A short introduction followed by full-width implementation visuals. */
+.engineering-case-content.engineering-case-content--stacked { display: block; padding: 8px 0 56px 64px; }
+.engineering-case-description { max-width: 1020px; margin: 0 0 26px; color: #d1e0e8; font-size: 1rem; line-height: 1.85; word-break: keep-all; }
+.engineering-case-note { margin: -12px 0 26px; color: #abc2d0; font-size: .75rem; line-height: 1.7; }
+.engineering-case-content--stacked .engineering-flow-panel { padding: clamp(20px, 3vw, 32px); }
+.engineering-case-content--stacked .engineering-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 20px 0 30px; }
+.engineering-case-content--stacked .engineering-flow li { display: flex; flex-direction: column; gap: 12px; padding: 16px 0 0; }
+.engineering-case-content--stacked .engineering-flow li p { font-size: .88rem; }
+@media (max-width: 900px) {
+  .engineering-case-content--stacked .engineering-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .engineering-case-content.engineering-case-content--stacked { padding-left: 0; padding-bottom: 36px; }
+  .engineering-case-description { font-size: .92rem; }
+}
+@media (max-width: 440px) {
+  .engineering-case-content--stacked .engineering-flow { grid-template-columns: 1fr; gap: 12px; }
+}
+
+.engineering-case-description { white-space: pre-line; }
+
+
+.case-list--focused { margin-top: 30px; }
+.case-list--focused details > div { grid-template-columns: 1fr; max-width: 1040px; gap: 16px; }
+.case-list--focused details > div p { margin: 0; word-break: keep-all; }
+@media (max-width: 760px) {
+  .case-list--focused summary { grid-template-columns: 38px 1fr auto; gap: 10px; }
+  .case-list--focused summary strong { font-size: 1rem; line-height: 1.6; }
+  .case-list--focused details > div { padding-left: 0; }
+}
+
+
+.case-list--focused .validation-evidence { border: 0; }
+.case-list--focused .validation-evidence > summary { display: inline-flex; min-height: 0; padding: 4px 0; gap: 8px; color: var(--signal); font-size: .78rem; font-weight: 500; }
+.validation-evidence > summary::after { content: '+'; }
+.validation-evidence[open] > summary::after { content: '−'; }
+.case-list--focused .validation-evidence > p { margin-top: 10px; color: var(--soft-ink); font-size: .8rem; line-height: 1.85; }
+
+/* Separate the two server paths and their external connections. */
+.architecture-map--paths { grid-template-columns: .65fr 1.5fr 1fr; }
+.architecture-path { display: flex; flex-direction: column; min-width: 0; }
+.architecture-path > .architecture-node:first-child { border-bottom: 1px solid #6f91a5; }
+.architecture-destinations { display: grid; grid-template-columns: 1fr 1.25fr; flex: 1; }
+.architecture-map--paths .architecture-node { min-width: 0; gap: 18px; }
+.architecture-map--paths .architecture-node strong { font-size: clamp(1.1rem, 1.7vw, 1.5rem); overflow-wrap: anywhere; }
+.feature-secondary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5%; }
+.feature-secondary-grid .feature-row { grid-template-columns: 1fr; gap: 26px; align-content: start; padding-block: 36px; }
+.feature-secondary-grid .feature-copy h3 { font-size: clamp(1.5rem, 2.3vw, 2rem); }
+.feature-secondary-grid .feature-copy p { max-width: none; margin-top: 14px; }
+@media (max-width: 900px) {
+  .architecture-map--paths { grid-template-columns: 1fr 1fr; }
+  .architecture-map--paths .architecture-node--main { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .architecture-map--paths, .feature-secondary-grid { grid-template-columns: 1fr; }
+  .architecture-destinations { grid-template-columns: 1fr; }
+  .architecture-map--paths .architecture-node { border-left: 0; }
+  .architecture-path > .architecture-node:first-child { border-bottom: 0; }
+}
+
+/* Short team-project case studies. */
+.team-overview { padding-top: 35px; }
+.team-intro { max-width: 920px; margin: 30px 0; font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.85; word-break: keep-all; }
+.team-detail .project-spec { max-width: 1000px; }
+.team-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5%; margin-top: 36px; }
+.team-features article { min-width: 0; }
+.team-features h2, .team-experience h2 { font-size: clamp(1.4rem, 2vw, 2rem); font-weight: 500; letter-spacing: -.03em; }
+.team-features p { min-height: 110px; margin: 18px 0 24px; color: var(--soft-ink); line-height: 1.85; word-break: keep-all; }
+.team-features a { display: block; border: 1px solid var(--line); }
+.team-features img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: #e8eff3; }
+.team-extra, .team-experience > p { max-width: 960px; line-height: 1.9; color: var(--soft-ink); word-break: keep-all; }
+.team-extra { margin-top: 36px; }
+.team-experience h2 { margin: 32px 0 22px; }
+@media (max-width: 760px) { .team-features { grid-template-columns: 1fr; gap: 40px; } .team-features p { min-height: 0; } }
+
+.architecture-comparison { margin: 44px 0 0; }
+.architecture-comparison figcaption { margin-bottom: 16px; color: #bdd1dc; font-size: .8rem; }
+.architecture-comparison a { display: block; border: 1px solid #6f91a5; }
+.architecture-comparison img { display: block; width: 100%; height: auto; }
+
+/* Blend the architecture illustration into its section background. */
+.architecture-comparison a { border: 0; }
+.architecture-comparison img { background: transparent; }
