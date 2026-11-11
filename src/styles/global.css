@@ -1131,3 +1131,6 @@ details[open] > summary .accordion-action-closed { display: none; }
 .project-visit-link svg { width: 17px; height: 17px; }
 .project-visit-link:hover { color: var(--ink); }
 .project-visit-link:focus-visible { outline: 2px solid var(--signal); outline-offset: 5px; }
+
+.project-title-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.project-title-actions .project-visit-link { white-space: nowrap; }
