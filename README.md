@@ -1,80 +1,55 @@
-# Kim Donggyu — Developer Portfolio
+# 김동규 포트폴리오
 
-React + Vite로 만든 독립 정적 개발자 포트폴리오입니다. Investome, Cruella, MVP 어느 저장소에도 포함하지 않고 별도 저장소와 Vercel 프로젝트로 관리합니다.
+## 📌 프로젝트 소개
 
-## 실행
+개발 프로젝트와 담당 기능, 사용 기술을 정리한 개인 포트폴리오 사이트입니다.
 
-```bash
-npm install
+금융·투자 서비스인 Investome와 교육과정에서 진행한 CRUELLA, MVP 팀 프로젝트를 소개합니다.
+
+## 🔗 링크
+
+- [포트폴리오 방문하기](https://kimdonggyu-portfolio.vercel.app/)
+- [GitHub 프로필](https://github.com/hiwinter99)
+- [Investome 방문하기](https://investome.vercel.app/)
+
+## 🛠️ 사용 기술
+
+- Front-end: React, JavaScript, Vite
+- Routing: React Router
+- Style: CSS
+- 배포: Vercel
+
+## ✨ 주요 내용
+
+- 자기소개 / 사용 기술 / 교육 이력 / 자격증 / 연락처
+- Investome 서비스 화면과 시스템 구성도
+- 외부 API 연동, 실시간 시세 전달, 모의투자 주문 처리 소개
+- Redis 캐시와 Nginx 로컬 실험 정리
+- CRUELLA, MVP의 담당 기능과 협업 경험
+- 실제 서비스 / GitHub / 노션 자료 연결
+
+## 👤 담당
+
+화면 구성, 프로젝트 내용 정리, React 개발과 배포를 진행했습니다.
+
+## 📂 실행 방법
+
+```sh
+npm ci
 npm run dev
+```
+
+배포용 빌드:
+
+```sh
 npm run build
 ```
 
-## 프로젝트 구조
+## 📁 주요 파일
 
-```text
-portfolio/
-├─ public/images/projects/
-│  ├─ investome/
-│  ├─ cruella/
-│  └─ mvp/
-├─ src/
-│  ├─ components/       # 공통 editorial UI
-│  ├─ data/projects.js  # 세 프로젝트의 목록 데이터
-│  ├─ pages/            # HOME, PROJECTS, 상세 페이지
-│  ├─ styles/global.css
-│  ├─ App.jsx           # 라우팅
-│  └─ main.jsx
-├─ package.json
-└─ vite.config.js
-```
-
-## 디자인 시스템
-
-- **Visual thesis:** 백엔드 개발자의 작업을 편집한 흑백 기술 저널
-- **Colors:** Paper #F2F0EA, Ink #121212, Signal #DF4A2F
-- **Typography:** Manrope/DM Sans + Noto Sans KR
-- **Layout:** 최대 1440px frame, 비대칭 editorial grid, 얇은 divider
-- **Motion:** 진입 fade, 링크 underline, 프로젝트 이미지의 미세한 scale
-- **Responsive:** 900px과 600px breakpoint
-
-## 구현 페이지
-
-| 경로 | 페이지 | 상태 |
-| --- | --- | --- |
-| / | HOME | Investome 대표 노출 |
-| /projects | PROJECTS | Investome, Cruella, MVP editorial 목록 |
-| /projects/investome | INVESTOME DETAIL | 실제 코드 기반 상세 내용 |
-| /projects/cruella | CRUELLA DETAIL | 코드 확인 전 placeholder |
-| /projects/mvp | MVP DETAIL | 코드 확인 전 placeholder |
-
-Investome는 전체 폭과 가장 큰 타이포그래피를 사용한 대표 프로젝트입니다. Cruella와 MVP도 작은 카드가 아니라 독립된 큰 프로젝트 섹션으로 표시하지만, 확인되지 않은 정보는 쓰지 않았습니다.
-
-## 교체해야 하는 이미지
-
-### Investome
-
-| 파일명 | 권장 이미지 |
-| --- | --- |
-| cover.webp | PROJECTS 대표 화면, 16:9 |
-| hero.webp | 상세 페이지 key visual, 16:9 |
-| dashboard.webp | 티커·랭킹·환율·뉴스 |
-| portfolio.webp | 포트폴리오 요약과 보유 종목 |
-| community.webp | 게시글 상세, 댓글과 추천 |
-
-### Cruella / MVP
-
-각 프로젝트 정보를 제공받은 뒤 아래 폴더에 cover.webp, hero.webp와 기능별 이미지를 추가합니다.
-
-- public/images/projects/cruella/
-- public/images/projects/mvp/
-
-## 아직 placeholder인 콘텐츠
-
-- HOME의 자기소개 한 줄
-- 경력·학력·이메일·블로그·이력서
-- Investome 실제 캡처
-- Cruella와 MVP의 기간, 역할, 기술, 기능, 트러블슈팅, 회고
-
-프로젝트 목록은 src/data/projects.js에서 관리하고 ProjectEntry가 공통 레이아웃을 렌더링합니다. Cruella와 MVP는 ProjectPlaceholder를 공유하며, 실제 코드를 제공받으면 각각의 상세 페이지로 교체합니다.
-
+- `src/data/profile.js`: 자기소개, 기술, 교육, 자격증
+- `src/data/projects.js`: 프로젝트 목록과 Investome 주요 기능
+- `src/data/investomeEngineering.js`: Investome 백엔드 구현 설명
+- `src/data/teamProjects.js`: CRUELLA, MVP 소개
+- `src/pages/`: 홈, 프로젝트 목록과 상세 페이지
+- `public/images/`: 프로필, 서비스 화면과 코드 캡처
