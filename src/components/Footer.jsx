@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="site-footer frame">
       <p>Kim Donggyu</p>
       <p className="footer-note">Backend Developer Portfolio</p>
-      <a href="https://github.com/Kimdonggyu26" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <a href="https://github.com/hiwinter99" target="_blank" rel="noreferrer">GitHub ↗</a>
     </footer>
   )
 }
